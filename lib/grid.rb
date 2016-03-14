@@ -18,7 +18,7 @@ class Grid
       if row[column] == false
         empty =  i - 1
         break
-      else empty = 6
+      else empty = rows - 1
       end
     end
     board[empty][column] = false
@@ -29,7 +29,7 @@ class Grid
   end
 end
 
-grid = Grid.new(7,6)
+grid = Grid.new(6,7)
 grid.create_board
 
 
