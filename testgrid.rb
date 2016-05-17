@@ -34,8 +34,12 @@ class Grid
   end
 
   def display
-    # board.each {|x| puts x.join" "}
-    pp board
+    board.each do |x|
+      x.map! do |c|
+       c.empty
+      end
+      puts x.join(" ")
+    end
   end
 end
 
@@ -45,21 +49,21 @@ grid.create_board
 grid.move(6)
 grid.move(6)
 grid.move(6)
+grid.move(3)
+grid.move(2)
+grid.move(1)
 grid.move(6)
 grid.move(6)
-grid.move(6)
-grid.move(6)
-grid.move(6)
-grid.board.display
+grid.display
 # grid.move(6)
 # grid.move(6)
 # grid.move(1)
 # grid.move(1)
 # grid.board[5][0] = 'xxxxxxxxxxxxxxxxxxxxxxx'
-grid.board.each_with_index do |row, j|
-  puts "row: #{j + 1}"
-  row.each_with_index do |cell, i|
-    # puts cell.empty
-    puts "column #{i + 1} empty: #{cell.empty}"
-  end
-end
+# grid.board.each_with_index do |row, j|
+#   puts "row: #{j + 1}"
+#   row.each_with_index do |cell, i|
+#     # puts cell.empty
+#     puts "column #{i + 1} empty: #{cell.empty}"
+#   end
+# end
