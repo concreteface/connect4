@@ -1,6 +1,6 @@
 require_relative 'lib/cell'
-require 'pry'
-require 'pp'
+require_relative 'lib/player'
+
 class Grid
   attr_reader :rows, :columns
   attr_accessor :board
@@ -15,55 +15,57 @@ class Grid
 
   def can_play?(slot)
     @board[0][slot].empty == true
-    # binding.pry
   end
 
-  def move(column)
+  def move(column, player)
     if can_play?(column)
-      empty = nil
-      board.each_with_index do |row, i|
-        if row[column].empty == false
-          empty =  i - 1
-          break
-        else empty = rows - 1
-        end
-      end
+      empty = find_first_open(column)
+      board[empty][column].piece = player.piece
       board[empty][column].empty = false
     else puts "Please choose another column"
     end
   end
 
+  def find_first_open(column)
+    empty = nil
+    board.each_with_index do |row, i|
+      if row[column].empty == false
+        empty =  i - 1
+        break
+      else empty = rows - 1
+      end
+    end
+    empty
+  end
+
   def display
     board.each do |x|
-      x.map! do |c|
-       c.empty
+      y = x.map do |c|
+        c.piece
       end
-      puts x.join(" ")
+      puts "| #{y.join(" | ")} |"
     end
   end
 end
 
 grid = Grid.new(6,7)
 grid.create_board
-
-grid.move(6)
-grid.move(6)
-grid.move(6)
-grid.move(3)
-grid.move(2)
-grid.move(1)
-grid.move(6)
-grid.move(6)
+john = Player.new('John', 'J')
+sandra = Player.new('Sandra', 'S')
+grid.move(6, john)
+grid.move(6, john)
+grid.move(5, sandra)
+grid.move(3, sandra)
+grid.move(3, sandra)
+grid.move(3, sandra)
+grid.move(3, sandra)
+# grid.move(2, john)
+# grid.move(1, john)
+# grid.move(6, john)
 grid.display
-# grid.move(6)
-# grid.move(6)
-# grid.move(1)
-# grid.move(1)
-# grid.board[5][0] = 'xxxxxxxxxxxxxxxxxxxxxxx'
-# grid.board.each_with_index do |row, j|
-#   puts "row: #{j + 1}"
-#   row.each_with_index do |cell, i|
-#     # puts cell.empty
-#     puts "column #{i + 1} empty: #{cell.empty}"
-#   end
-# end
+grid.board.each_with_index do |row, j|
+  puts "row: #{j + 1}"
+  row.each_with_index do |cell, i|
+    puts "column #{i + 1} empty: #{cell.empty}"
+  end
+end

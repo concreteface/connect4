@@ -1,9 +1,9 @@
 class Cell
-attr_accessor :empty
-attr_reader :piece
+attr_accessor :empty, :piece
+
   def initialize
     @empty = true
-    @piece = 'X'
+    @piece = '-'
   end
 
   def set_cell(piece)
