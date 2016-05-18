@@ -18,10 +18,9 @@ class Grid
   end
 
   def move(column, player)
-    if can_play?(column)
-      empty = find_first_open(column)
-      board[empty][column].piece = player.piece
-      board[empty][column].empty = false
+    if can_play?(column - 1)
+      empty = find_first_open(column - 1)
+      board[empty][column - 1].set_cell(player.piece)
     else puts "Please choose another column"
     end
   end
@@ -52,6 +51,7 @@ grid = Grid.new(6,7)
 grid.create_board
 john = Player.new('John', 'J')
 sandra = Player.new('Sandra', 'S')
+grid.move(1, john)
 grid.move(6, john)
 grid.move(6, john)
 grid.move(5, sandra)
@@ -59,9 +59,12 @@ grid.move(3, sandra)
 grid.move(3, sandra)
 grid.move(3, sandra)
 grid.move(3, sandra)
-# grid.move(2, john)
-# grid.move(1, john)
-# grid.move(6, john)
+grid.move(7, john)
+grid.move(5, sandra)
+grid.move(3, sandra)
+grid.move(3, sandra)
+grid.move(3, sandra)
+
 grid.display
 grid.board.each_with_index do |row, j|
   puts "row: #{j + 1}"
