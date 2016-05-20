@@ -1,6 +1,6 @@
 class Cell
   attr_accessor :empty
-attr_reader :piece
+  attr_reader :piece
   def initialize
     @empty = true
     @piece = '-'

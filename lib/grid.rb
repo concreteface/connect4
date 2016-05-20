@@ -3,10 +3,12 @@ require_relative 'player'
 
 class Grid
   attr_reader :rows, :columns
-  attr_accessor :board
+  attr_accessor :board, :last_move
   def initialize(rows, columns)
     @rows = rows
     @columns = columns
+    create_board
+    @last_move = []
   end
 
   def create_board
@@ -17,11 +19,16 @@ class Grid
     @board[0][slot].empty == true
   end
 
+  def board_full?
+    board[0].all? {|x| x.empty == false}
+  end
+
   def move(column, player)
     if can_play?(column - 1)
       empty = find_first_open(column - 1)
       board[empty][column - 1].set_cell(player.piece)
-    else puts "Please choose another column"
+      last_move = [empty, column - 1]
+    else puts "Column full."
     end
   end
 
@@ -38,11 +45,16 @@ class Grid
   end
 
   def display
-    board.each do |x|
-      y = x.map do |c|
-        c.piece
+    board.unshift([*1..columns])
+    board.each_with_index do |x, j|
+      y = x.each_with_index.map do |c, i|
+        if j > 0
+          c.piece
+        else c
+        end
       end
       puts "| #{y.join(" | ")} |"
     end
+    board.shift
   end
 end

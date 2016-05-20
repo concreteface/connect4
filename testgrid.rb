@@ -1,5 +1,6 @@
 require_relative 'lib/cell'
 require_relative 'lib/player'
+require 'pry'
 
 class Grid
   attr_reader :rows, :columns
@@ -7,6 +8,7 @@ class Grid
   def initialize(rows, columns)
     @rows = rows
     @columns = columns
+    create_board
   end
 
   def create_board
@@ -37,20 +39,30 @@ class Grid
     empty
   end
 
+  def board_full?
+    board[0].all? {|x| x.empty == false}
+  end
+
   def display
-    board.each do |x|
-      y = x.map do |c|
-        c.piece
+    board.unshift([*1..columns])
+    board.each_with_index do |x, j|
+      y = x.each_with_index.map do |c, i|
+        if j > 0
+          c.piece
+        else c
+        end
       end
       puts "| #{y.join(" | ")} |"
     end
+    board.shift
   end
 end
 
 grid = Grid.new(6,7)
-grid.create_board
 john = Player.new('John', 'J')
 sandra = Player.new('Sandra', 'S')
+grid.move(2, john)
+grid.move(1, john)
 grid.move(1, john)
 grid.move(6, john)
 grid.move(6, john)
@@ -58,17 +70,8 @@ grid.move(5, sandra)
 grid.move(3, sandra)
 grid.move(3, sandra)
 grid.move(3, sandra)
-grid.move(3, sandra)
 grid.move(7, john)
-grid.move(5, sandra)
 grid.move(3, sandra)
-grid.move(3, sandra)
-grid.move(3, sandra)
-
 grid.display
-grid.board.each_with_index do |row, j|
-  puts "row: #{j + 1}"
-  row.each_with_index do |cell, i|
-    puts "column #{i + 1} empty: #{cell.empty}"
-  end
-end
+
+puts grid.board_full?
